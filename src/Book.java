@@ -1,4 +1,4 @@
-public class Book {
+public abstract class Book {
     private String name;
     private String bookId;
     private Author author;
@@ -28,7 +28,7 @@ public class Book {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 

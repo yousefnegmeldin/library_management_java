@@ -20,7 +20,8 @@ public class Library {
 
     }
     public void displayBooks(){
-        books.forEach(b->System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor()+ ", Book Id: "+b.getBookId());)
+
+        books.forEach(b->System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor().getFirstName() +" " +b.getAuthor().getLastName()+ ", Book Id: "+b.getBookId()));
     }
 
     //used polymorphism and optional
@@ -33,7 +34,7 @@ public class Library {
         return retrievedBooks.isEmpty() ? Optional.empty() : Optional.of(retrievedBooks);
     }
 
-    public boolean borrowBook(Book b, String customerId){
+    public boolean borrowBook(Book b, Customer customer){
         if (borrowed.containsKey(b)) {
             System.out.println("Book already borrowed");
             return false;
