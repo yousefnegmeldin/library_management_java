@@ -1,8 +1,12 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 public class Library {
-    private ArrayList<Book> books;
-    private HashMap<Book,String> borrowed;
+    private final ArrayList<Book> books;
+    private final HashMap<Book,Customer> borrowed;
 
     public Library(){
         borrowed = new HashMap<>();
@@ -20,20 +24,35 @@ public class Library {
     }
 
     //used polymorphism and optional
-
-    public List<Book> retrieve(Author author){
-        Optional<ArrayList<Book>> retrievedBooks =
-                books.stream()
-                        .filter(b -> b.getAuthor().equals(author)).;
+    public Optional<List<Book>> retrieve(Author author){
+        List<Book> retrievedBooks = books.stream()
+                .filter(b -> b.getAuthor().equals(author))
+                .collect(Collectors.toList());
         //return only books where author of book is the same as the author provided ^^^^
-        return retrievedBooks.orElse(new ArrayList<Book>());
+
+        return retrievedBooks.isEmpty() ? Optional.empty() : Optional.of(retrievedBooks);
     }
 
-    public void borrowBook(Book b, String customerId){
-        if(borrowed.containsKey(b)){
-            System.out.println("book already borrowed");
-            return;
+    public boolean borrowBook(Book b, String customerId){
+        if (borrowed.containsKey(b)) {
+            System.out.println("Book already borrowed");
+            return false;
         }
-        borrowed.put(b,customerId);
+        borrowed.put(b, customer);
+        return true;
+    }
+
+    public boolean returnBook(Customer c, Book b){
+        if(!borrowed.containsKey(b)){
+            System.out.println("book was not borrowed");
+            return false;
+        }
+        if(borrowed.get(b)!=c){
+            //can use exceptions instead of true and false
+            System.out.println("book was not borrowed by this customer");
+            return false;
+        }
+        borrowed.remove(b);
+        return true;
     }
 }
