@@ -1,8 +1,8 @@
 public class Book {
     private String name;
     private String bookId;
-    private String author;
-    public Book(String n, String b, String a){
+    private Author author;
+    public Book(String n, String b, Author a){
         this.name = n;
         this.bookId = b;
         this.author =a;
@@ -24,7 +24,7 @@ public class Book {
         this.bookId = bookId;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 

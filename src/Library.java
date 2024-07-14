@@ -16,19 +16,17 @@ public class Library {
 
     }
     public void displayBooks(){
-        for(Book b:books){
-            System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor()+ ", Book Id: "+b.getBookId());
-        }
-
+        books.forEach(b->System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor()+ ", Book Id: "+b.getBookId());)
     }
-    public List<Book> retrieve(Author author){
-        //used optional
 
-        Optional<ArrayList<Book>> retreivedBooks =
+    //used polymorphism and optional
+
+    public List<Book> retrieve(Author author){
+        Optional<ArrayList<Book>> retrievedBooks =
                 books.stream()
-                        .filter(b -> b.getAuthor().equals(author.getFirstName()));
+                        .filter(b -> b.getAuthor().equals(author)).;
         //return only books where author of book is the same as the author provided ^^^^
-        return retreivedBooks.orElse(new ArrayList<Book>());
+        return retrievedBooks.orElse(new ArrayList<Book>());
     }
 
     public void borrowBook(Book b, String customerId){
