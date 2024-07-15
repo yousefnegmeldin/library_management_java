@@ -6,7 +6,7 @@ import java.util.Optional;
 public class Main {
 
     public static void main(String[] args){
-        Library library = new Library();
+        /*Library library = new Library();
         Customer customer1 = new Customer("yousef","mohamed",20);
         Customer customer2 = new Customer("mohamed","negm",25);
 
@@ -33,6 +33,6 @@ public class Main {
         }
         else{
             System.out.println("no books found for this author");
-        }
+        }*/
     }
 }

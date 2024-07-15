@@ -15,6 +15,7 @@ public class Author extends Human {
     public int getNumOfPublishedBooks() {
         return numOfPublishedBooks;
     }
+
     public void addBook(Book book) {
         booksWritten.add(book);
         numOfPublishedBooks++;
