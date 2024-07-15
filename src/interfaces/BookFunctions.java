@@ -5,7 +5,7 @@ import models.Author;
 import java.util.List;
 import java.util.Optional;
 
-public interface BookService {
+public interface BookFunctions {
     void addBook(Book book);
     void removeBook(Book bookToRemove);
     void displayBooks();
