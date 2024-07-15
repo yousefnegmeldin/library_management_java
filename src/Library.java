@@ -39,10 +39,11 @@ public class Library {
             return false;
         }
         borrowed.put(b, customer);
+        System.out.println("Book borrowed successfully");
         return true;
     }
 
-    public boolean returnBook(Customer c, Book b){
+    public boolean returnBook(Book b,Customer c){
         if(!borrowed.containsKey(b)){
             System.out.println("book was not borrowed");
             return false;
@@ -53,6 +54,7 @@ public class Library {
             return false;
         }
         borrowed.remove(b);
+        System.out.println("Book removed successfully");
         return true;
     }
 }
