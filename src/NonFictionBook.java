@@ -1,5 +1,5 @@
 public class NonFictionBook extends Book {
-    public NonFictionBook(String n, int b, Author a){
-        super(n,b,a);
+    public NonFictionBook(String name, String isbn, Author author){
+        super(name,isbn,author);
     }
 }

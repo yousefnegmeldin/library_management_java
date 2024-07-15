@@ -27,9 +27,9 @@ public abstract class Human {
         this.age = age;
     }
 
-    public Human(String f, String l, int a){
-        this.firstName = f;
-        this.lastName = l;
-        this.age = a;
+    public Human(String firstName, String lastName, int age){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
     }
 }

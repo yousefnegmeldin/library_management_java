@@ -10,8 +10,8 @@ public class Main {
 
         Author author1 = new Author("yousef", "negm",19);
         Author author2 = new Author("john","doe",33);
-        Book book1 = new FantasyBook("Harry Potter",1,author1);
-        Book book2 = new NonFictionBook("The boy in striped pjamas",2,author2 );
+        Book book1 = new FantasyBook("Harry Potter","1",author1);
+        Book book2 = new NonFictionBook("The boy in striped pjamas","2",author2 );
         library.addBook(book1);
 
         library.addBook(book2);

@@ -1,5 +1,5 @@
 public class FantasyBook extends Book {
-    public FantasyBook(String n, int b, Author a){
-        super(n,b,a);
+    public FantasyBook(String name, String isbn, Author author){
+        super(name,isbn,author);
     }
 }

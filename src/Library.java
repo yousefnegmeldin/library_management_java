@@ -20,7 +20,7 @@ public class Library {
 
     }
     public void displayBooks(){
-        books.forEach(b->System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor().getFirstName() +" " +b.getAuthor().getLastName()+ ", Book Id: "+b.getBookId()));
+        books.forEach(b->System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor().getFirstName() +" " +b.getAuthor().getLastName()+ ", Book Id: "+b.getIsbn()));
     }
 
     //used polymorphism and optional
@@ -29,7 +29,6 @@ public class Library {
                 .filter(b -> b.getAuthor().equals(author))
                 .collect(Collectors.toList());
         //return only books where author of book is the same as the author provided ^^^^
-
         return retrievedBooks.isEmpty() ? Optional.empty() : Optional.of(retrievedBooks);
     }
 

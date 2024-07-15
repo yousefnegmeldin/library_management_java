@@ -1,12 +1,12 @@
 public abstract class Book {
     private String name;
-    private int bookId;
+    private String isbn;
     private Author author;
-    public Book(String n, int b, Author a){
-        this.name = n;
-        this.bookId = b;
-        this.author =a;
-        a.addBook(this);
+    public Book(String name, String isbn, Author author){
+        this.name = name;
+        this.isbn = isbn;
+        this.author =author;
+        author.addBook(this);
     }
 
     public String getName() {
@@ -17,12 +17,12 @@ public abstract class Book {
         this.name = name;
     }
 
-    public int getBookId() {
-        return bookId;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public Author getAuthor() {
@@ -36,7 +36,7 @@ public abstract class Book {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Book)
-            return this.bookId ==((Book)obj).bookId;
+            return this.isbn.equals(((Book)obj).getIsbn());
         return false;
     }
 }
