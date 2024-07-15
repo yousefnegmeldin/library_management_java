@@ -52,6 +52,14 @@ public abstract class Book {
         return author;
     }
 
+    public Author getSecondAuthor(){
+        return secondAuthor;
+    }
+
+    public Author getThirdAuthor(){
+        return thirdAuthor;
+    }
+
     public void setAuthor(Author author) {
         this.author = author;
     }

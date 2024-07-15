@@ -10,4 +10,5 @@ public interface BookFunctions {
     void removeBook(Book bookToRemove);
     void displayBooks();
     Optional<List<Book>> retrieveBooksByAuthor(Author author);
+//    boolean compareAuthors(Author authorToCompare);
 }
