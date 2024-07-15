@@ -20,7 +20,6 @@ public class Library {
 
     }
     public void displayBooks(){
-
         books.forEach(b->System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor().getFirstName() +" " +b.getAuthor().getLastName()+ ", Book Id: "+b.getBookId()));
     }
 
