@@ -1,16 +1,35 @@
 package models;
 
-import java.util.ArrayList;
-
 public abstract class Book {
     private String name;
     private String isbn;
-    private ArrayList<Author> author;
-
-    public Book(String name, String isbn, ArrayList<Author> author){
+    private Author author;
+    private Author secondAuthor;
+    private Author thirdAuthor;
+    public Book(String name, String isbn, Author author){
         this.name = name;
         this.isbn = isbn;
-        this.author = author;
+        this.author =author;
+        author.addBook(this);
+    }
+    public Book(String name, String isbn, Author author1, Author author2){
+        this.name = name;
+        this.isbn = isbn;
+        this.author =author1;
+        this.secondAuthor= author2;
+        author.addBook(this);
+        secondAuthor.addBook(this);
+    }
+
+    public Book(String name, String isbn, Author author1, Author author2, Author author3){
+        this.name = name;
+        this.isbn = isbn;
+        this.author =author1;
+        this.secondAuthor = author2;
+        this.thirdAuthor = author3;
+        author.addBook(this);
+        secondAuthor.addBook(this);
+        thirdAuthor.addBook(this);
     }
 
     public String getName() {
@@ -29,10 +48,13 @@ public abstract class Book {
         this.isbn = isbn;
     }
 
-    public ArrayList<Author> getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
 
     @Override
     public boolean equals(Object obj) {
