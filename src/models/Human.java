@@ -1,3 +1,5 @@
+package models;
+
 public abstract class Human {
     private String firstName;
     private String lastName;

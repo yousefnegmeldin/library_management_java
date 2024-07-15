@@ -1,3 +1,5 @@
+package models;
+
 public abstract class Book {
     private String name;
     private String isbn;

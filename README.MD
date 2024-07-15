@@ -1,4 +1,4 @@
-# Library Management System
+# models.Library Management System
 
 ---
 ## Features
@@ -14,7 +14,11 @@
 
 ### Optionals
 I used the optional type in the following function
+
 ```java
+import models.Author;
+import models.Book;
+
 public Optional<List<Book>> retrieve(Author author)
 ```
 Here, I return the optional data type denoting that the return type may be null if
@@ -31,34 +35,34 @@ The Lambda functions are exactly the same as arrow functions found in javascript
 I have implemented them in the following function
 ```java
 public void displayBooks(){
-    books.forEach(b->System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor().getFirstName() +" " +b.getAuthor().getLastName()+ ", Book Id: "+b.getBookId()));
+    books.forEach(b->System.out.println("models.Book Name: "+b.getName() +", models.Book models.Author: "+ b.getAuthor().getFirstName() +" " +b.getAuthor().getLastName()+ ", models.Book Id: "+b.getBookId()));
 }
 ```
 
 
 ---
 ## Abstract Classes
-- Book
-- Human
+- models.Book
+- models.Human
 ## Classes
-- Customer
-- Author
-- FantasyBook
-- NonFictionBook
-- Library
+- models.Customer
+- models.Author
+- models.FantasyBook
+- models.NonFictionBook
+- models.Library
 - Main
 
 ### Abstraction
-Abstraction is implemented in the Human and Book classes.
+Abstraction is implemented in the models.Human and models.Book classes.
 
 ### Polymorphism
-The books arraylist and the borrowed hashmap in the Library class use polymorphism.
-`ArrayList<Book>` and `Hashmap<Book,Customer>`. Book here is an abstract class,
+The books arraylist and the borrowed hashmap in the models.Library class use polymorphism.
+`ArrayList<models.Book>` and `Hashmap<models.Book,models.Customer>`. models.Book here is an abstract class,
 that can contain objects of more specific books such as FantastyBook.
 
 ### Inheritance
-The Customer and Author classes both inherit from the Human class, and the FantasyBook
-and NonFictionBook classes inherit from Book.
+The models.Customer and models.Author classes both inherit from the models.Human class, and the models.FantasyBook
+and models.NonFictionBook classes inherit from models.Book.
 
 ### Encapsulation
 All attributes in each class are declared private, with setter and getter methods for

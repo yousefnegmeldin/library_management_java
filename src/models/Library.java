@@ -1,3 +1,5 @@
+package models;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +22,7 @@ public class Library {
 
     }
     public void displayBooks(){
-        books.forEach(b->System.out.println("Book Name: "+b.getName() +", Book Author: "+ b.getAuthor().getFirstName() +" " +b.getAuthor().getLastName()+ ", Book Id: "+b.getIsbn()));
+        books.forEach(b->System.out.println("models.Book Name: "+b.getName() +", models.Book models.Author: "+ b.getAuthor().getFirstName() +" " +b.getAuthor().getLastName()+ ", models.Book Id: "+b.getIsbn()));
     }
 
     //used polymorphism and optional
@@ -34,11 +36,11 @@ public class Library {
 
     public boolean borrowBook(Book b, Customer customer){
         if (borrowed.containsKey(b)) {
-            System.out.println("Book already borrowed");
+            System.out.println("models.Book already borrowed");
             return false;
         }
         borrowed.put(b, customer);
-        System.out.println("Book borrowed successfully");
+        System.out.println("models.Book borrowed successfully");
         return true;
     }
 
@@ -53,7 +55,7 @@ public class Library {
             return false;
         }
         borrowed.remove(b);
-        System.out.println("Book removed successfully");
+        System.out.println("models.Book removed successfully");
         return true;
     }
 }
