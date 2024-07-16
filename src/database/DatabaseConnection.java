@@ -3,21 +3,19 @@ package database;
 import java.sql.*;
 
 public class DatabaseConnection {
-    public static void main(String[] args) {
+    Connection connection;
 
+    public DatabaseConnection(){
         try{
-            Connection connection = DriverManager.getConnection(
+            this.connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/library","root","yousef"
             );
 
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM book");
-            while(resultSet.next()){
-                System.out.println(resultSet.getString("bookName") + " "+ resultSet.getString("isbn"));
-            }
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM book");
         }catch(SQLException exception){
             exception.printStackTrace();
         }
-
     }
+
 }
