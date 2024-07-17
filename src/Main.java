@@ -1,45 +1,46 @@
 import models.*;
 import services.SQLService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Main {
 
     public static void main(String[] args){
-        /*Library library = new Library();
-        Customer customer1 = new Customer("yousef","mohamed",20);
-        Customer customer2 = new Customer("mohamed","negm",25);
 
-        Author author1 = new Author("yousef", "negm",19);
-        Author author2 = new Author("john","doe",33);
-        Book book1 = new FantasyBook("Harry Potter","1",author1);
-        Book book2 = new NonFictionBook("The boy in striped pjamas","2",author2 );
-        library.addBook(book1);
-
-        library.addBook(book2);
-        library.removeBook(book2);
-
-        library.displayBooks();
-
-        library.borrowBook(book1,customer1);
-        library.borrowBook(book1,customer1);
-        library.returnBook(book1,customer1);
-        Optional<List<Book>> opt = library.retrieve(author1);
-
-        if(opt.isPresent()){
-            List<Book> books = opt.get();
-            System.out.println("Books written by: "+ author1.getFirstName() +" "+ author1.getLastName());
-            books.forEach(b -> System.out.println(b.getName()));
-        }
-        else{
-            System.out.println("no books found for this author");
-        }*/
         SQLService sqlService = new SQLService();
-        FantasyBook book1 = new FantasyBook("Harry Potter9","23578357932","Fantasy",null);
-        sqlService.addBookToDatabase(book1);
-//        sqlService.deleteBook(book1);
-        Book book = sqlService.getBookByIsbn("23578357932");
-        System.out.println(book.getName());
+        Author author1 = new Author("JK", "Rowling",35);
+        sqlService.addAuthorToDatabase(author1);
+        Author author2 = new Author("Jane","Doe",32);
+        sqlService.addAuthorToDatabase(author2);
+        ArrayList<Book> allBooks = sqlService.getAllBooks();
+        System.out.println("Printing all books!");
+        for(Book book: allBooks){
+            System.out.println(book);
+        }
+        Book bookToDelete = allBooks.get(allBooks.size()-1);
+        sqlService.deleteBook(bookToDelete);
+        System.out.println("successful deletion in database for book: " + bookToDelete.getName());
+        Book bookToBeAdded = new FantasyBook("I am number four","273589632586325","Fantasy");
+        bookToBeAdded.setAuthor(author1);
+        bookToBeAdded.setSecondAuthor(author2);
+        sqlService.addBookToDatabase(bookToBeAdded);
+
+        Book selectedBookByName = sqlService.getBookByName("Harry Potter 2");
+        System.out.println(selectedBookByName);
+        Book selectedBookByIsbn = sqlService.getBookByIsbn("273589632586325");
+        System.out.println(selectedBookByIsbn);
+
+        ArrayList<Book> retrievedBooksByAuthor = sqlService.retrieveBooksByAuthor(author1);
+
+        Customer firstCustomer = new Customer("youseCustomer", "negm",19);
+        sqlService.addCustomerToDatabase(firstCustomer);
+        sqlService.addCustomerIdToBook(bookToBeAdded, firstCustomer);
+
+        sqlService.removeCustomerIdFromBook(bookToBeAdded);
+
+
+
     }
 }

@@ -1,5 +1,4 @@
-use library;
-
+use library;	
 CREATE TABLE customer(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(50),
@@ -11,6 +10,7 @@ CREATE TABLE book(
     bookName VARCHAR(50),
     isbn VARCHAR(50),
     customerId INT,
+    genre VARCHAR(50),
     FOREIGN KEY (customerId) REFERENCES customer(id) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
@@ -31,3 +31,4 @@ CREATE TABLE book_author(
 	FOREIGN KEY (authorId) REFERENCES author(id)  ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
+

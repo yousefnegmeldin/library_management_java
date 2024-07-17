@@ -38,6 +38,12 @@ public abstract class Human {
         this.age = age;
     }
 
+    public Human(String firstName, String lastName, int age){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
+
     public Human(int id,String firstName, String lastName, int age){
         this.firstName = firstName;
         this.lastName = lastName;

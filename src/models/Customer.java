@@ -8,5 +8,9 @@ public class Customer extends Human {
         super(customerId,firstName,lastName,age);
         books = new ArrayList<>();
     }
+    public Customer(String firstName,String lastName,int age){
+        super(firstName,lastName,age);
+        books = new ArrayList<>();
+    }
 
 }

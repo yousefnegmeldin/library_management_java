@@ -4,6 +4,7 @@ import database.DatabaseConnection;
 import interfaces.SqlQueriesInterface;
 import models.*;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -38,7 +39,6 @@ public class SQLService implements SqlQueriesInterface {
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             preparedStatement.setInt(1,bookId);
             int resultSet = preparedStatement.executeUpdate();
-            System.out.println(resultSet);
         }catch(SQLException exception){
             exception.printStackTrace();
         }
@@ -55,7 +55,7 @@ public class SQLService implements SqlQueriesInterface {
         int insertedBookId = 0;
         String executionString = "INSERT INTO book (bookName, isbn, genre) VALUES (?, ?, ?)";
         try{
-            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,name);
             preparedStatement.setString(2,isbn);
             preparedStatement.setString(3,genre);
@@ -119,7 +119,7 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public ArrayList<Book> retrieveBooksByAuthor(Author author) {
-        String executionString = "SELECT * FROM books WHERE id = (SELECT bookId FROM book_author WHERE authorId = ?)";
+        String executionString = "SELECT * FROM book WHERE id = (SELECT bookId FROM book_author WHERE authorId = ?)";
         ArrayList<Book> booksRetrieved = new ArrayList<>();
         int authorId = author.getId();
         try{
@@ -135,6 +135,30 @@ public class SQLService implements SqlQueriesInterface {
             exception.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void addCustomerToDatabase(Customer customer){
+        String firstName = customer.getFirstName();
+        String lastName = customer.getLastName();
+        String executionString = "INSERT INTO customer (firstName,lastName) VALUES (?, ?)";
+        try{
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,firstName);
+            preparedStatement.setString(2,lastName);
+            ResultSet generatedKeys = null;
+            int insertedCustomerId =0;
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    insertedCustomerId = generatedKeys.getInt(1);
+                }
+            }
+            customer.setId(insertedCustomerId);
+        }catch(SQLException exception){
+            exception.printStackTrace();
+        }
     }
 
     @Override
@@ -154,16 +178,14 @@ public class SQLService implements SqlQueriesInterface {
     }
 
     @Override
-    public void removeCustomerIdFromBook(Book book,Customer customer) {
+    public void removeCustomerIdFromBook(Book book) {
         int bookId = book.getBookId();
-        int customerId = customer.getId();
         String executionString = "UPDATE book SET customerId = ? WHERE id = ?";
         try{
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             preparedStatement.setNull(1, Types.INTEGER);
             preparedStatement.setInt(2,bookId);
             int resultSet = preparedStatement.executeUpdate();
-            System.out.println(resultSet);
         }catch(SQLException exception){
             exception.printStackTrace();
         }
@@ -173,13 +195,21 @@ public class SQLService implements SqlQueriesInterface {
     public void addAuthorToDatabase(Author author) {
         String firstName = author.getFirstName();
         String lastName = author.getLastName();
-        String executionString = "INSERT INTO book (firstName,lastName) VALUES (?, ?)";
+        String executionString = "INSERT INTO author (firstName,lastName) VALUES (?, ?)";
         try{
-            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,firstName);
             preparedStatement.setString(2,lastName);
-            int resultSet = preparedStatement.executeUpdate();
-            System.out.println(resultSet);
+            ResultSet generatedKeys = null;
+            int insertedAuthorId =0;
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    insertedAuthorId = generatedKeys.getInt(1);
+                }
+            }
+            author.setId(insertedAuthorId);
         }catch(SQLException exception){
             exception.printStackTrace();
         }
@@ -221,6 +251,9 @@ public class SQLService implements SqlQueriesInterface {
     public void linkBookToAuthor(Book book, Author author) {
         int authorId = author.getId();
         int bookId = book.getBookId();
+        System.out.println(authorId);
+        System.out.println(bookId);
+//        System.out.println(author.getFirstName());
         String executionString = "INSERT INTO book_author (bookId,authorId) VALUES (?, ?)";
         try{
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
@@ -240,8 +273,8 @@ public class SQLService implements SqlQueriesInterface {
         String bookIsbn = resultSet.getString("isbn");
         int bookId = resultSet.getInt("id");
         switch(bookGenre){
-            case "Fantasy": bookToCreate = new FantasyBook(bookId,bookName,bookIsbn,bookGenre,null);break;
-            case "NonFiction":bookToCreate = new NonFictionBook(bookId,bookName,bookIsbn,bookGenre,null);break;
+            case "Fantasy": bookToCreate = new FantasyBook(bookId,bookName,bookIsbn,bookGenre);break;
+            case "NonFiction":bookToCreate = new NonFictionBook(bookId,bookName,bookIsbn,bookGenre);break;
         }
         return bookToCreate;
     }

@@ -8,6 +8,13 @@ public abstract class Book {
     private Author author;
     private Author secondAuthor;
     private Author thirdAuthor;
+
+    public Book(String name, String isbn, String genre){
+        this.name = name;
+        this.isbn = isbn;
+        this.genre = genre;
+    }
+
     public Book(int bookId, String name, String isbn, String genre, Author author){
         this.bookId = bookId;
         this.name = name;
@@ -73,6 +80,18 @@ public abstract class Book {
         return secondAuthor;
     }
 
+    public void setSecondAuthor(Author secondAuthor) {
+        this.secondAuthor = secondAuthor;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setThirdAuthor(Author thirdAuthor) {
+        this.thirdAuthor = thirdAuthor;
+    }
+
     public Author getThirdAuthor(){
         return thirdAuthor;
     }
@@ -83,6 +102,11 @@ public abstract class Book {
 
     public String getGenre(){
         return this.genre;
+    }
+
+    @Override
+    public String toString(){
+        return this.name + " " + this.isbn + " " + this.genre + " ";
     }
 
     @Override
