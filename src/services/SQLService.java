@@ -171,7 +171,7 @@ public class SQLService implements SqlQueriesInterface {
             preparedStatement.setInt(1,customerId);
             preparedStatement.setInt(2,bookId);
             int resultSet = preparedStatement.executeUpdate();
-            System.out.println(resultSet);
+
         }catch(SQLException exception){
             exception.printStackTrace();
         }
@@ -224,7 +224,7 @@ public class SQLService implements SqlQueriesInterface {
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             preparedStatement.setInt(1,authorId);
             int resultSet = preparedStatement.executeUpdate();
-            System.out.println(resultSet);
+
         }catch(SQLException exception){
             exception.printStackTrace();
         }
@@ -251,16 +251,12 @@ public class SQLService implements SqlQueriesInterface {
     public void linkBookToAuthor(Book book, Author author) {
         int authorId = author.getId();
         int bookId = book.getBookId();
-        System.out.println(authorId);
-        System.out.println(bookId);
-//        System.out.println(author.getFirstName());
         String executionString = "INSERT INTO book_author (bookId,authorId) VALUES (?, ?)";
         try{
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             preparedStatement.setInt(1,bookId);
             preparedStatement.setInt(2,authorId);
             int resultSet = preparedStatement.executeUpdate();
-            System.out.println(resultSet);
         }catch(SQLException exception){
             exception.printStackTrace();
         }
