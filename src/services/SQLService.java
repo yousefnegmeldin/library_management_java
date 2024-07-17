@@ -21,7 +21,7 @@ public class SQLService implements SqlQueriesInterface {
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                booksRetrieved.add(createBook(resultSet));
+                booksRetrieved.add(createBookObject(resultSet));
             }
             return booksRetrieved;
         }catch(SQLException exception){
@@ -49,20 +49,33 @@ public class SQLService implements SqlQueriesInterface {
         String name = book.getName();
         String isbn = book.getIsbn();
         String genre = book.getGenre();
-
         Author firstAuthor = book.getAuthor();
         Author secondAuthor = book.getSecondAuthor();
         Author thirdAuthor = book.getThirdAuthor();
+        int insertedBookId = 0;
         String executionString = "INSERT INTO book (bookName, isbn, genre) VALUES (?, ?, ?)";
         try{
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             preparedStatement.setString(1,name);
             preparedStatement.setString(2,isbn);
             preparedStatement.setString(3,genre);
-            int resultSet = preparedStatement.executeUpdate();
 
-//            int resultSet = statement.executeUpdate(executionString);
-            System.out.println(resultSet);
+            ResultSet generatedKeys = null;
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    insertedBookId = generatedKeys.getInt(1);
+                }
+            }
+            book.setBookId(insertedBookId);
+            if(firstAuthor!=null)
+                linkBookToAuthor(book,firstAuthor);
+            if(secondAuthor !=null)
+                linkBookToAuthor(book,secondAuthor);
+            if(thirdAuthor!=null)
+                linkBookToAuthor(book,thirdAuthor);
+
         }catch(SQLException exception){
             exception.printStackTrace();
         }
@@ -78,7 +91,7 @@ public class SQLService implements SqlQueriesInterface {
             ResultSet resultSet = preparedStatement.executeQuery();
             Book selectedBook =null;
             while(resultSet.next()){
-                selectedBook = createBook(resultSet);
+                selectedBook = createBookObject(resultSet);
             }
             return selectedBook;
         }catch(SQLException exception){
@@ -96,7 +109,7 @@ public class SQLService implements SqlQueriesInterface {
             ResultSet resultSet = preparedStatement.executeQuery();
             Book selectedBook =null;
             while(resultSet.next()){
-                selectedBook = createBook(resultSet);
+                selectedBook = createBookObject(resultSet);
             }
             return selectedBook;
         }catch(SQLException exception){
@@ -107,12 +120,38 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public ArrayList<Book> retrieveBooksByAuthor(Author author) {
-
+        String executionString = "SELECT * FROM books WHERE id = (SELECT bookId FROM book_author WHERE authorId = ?)";
+        ArrayList<Book> booksRetrieved = new ArrayList<>();
+        int authorId = author.getId();
+        try{
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            preparedStatement.setInt(1,authorId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Book selectedBook =null;
+            while(resultSet.next()){
+                booksRetrieved.add(createBookObject(resultSet));
+            }
+            return booksRetrieved;
+        }catch(SQLException exception){
+            exception.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public void addCustomerIdToBook(Customer customer) {
-
+    public void addCustomerIdToBook(Book book,Customer customer) {
+        int bookId = book.getBookId();
+        int customerId = customer.getId();
+        String executionString = "UPDATE book SET customerId = ? WHERE id = ?";
+        try{
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            preparedStatement.setInt(1,customerId);
+            preparedStatement.setInt(2,bookId);
+            int resultSet = preparedStatement.executeUpdate();
+            System.out.println(resultSet);
+        }catch(SQLException exception){
+            exception.printStackTrace();
+        }
     }
 
     @Override
@@ -124,7 +163,6 @@ public class SQLService implements SqlQueriesInterface {
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             preparedStatement.setString(1,firstName);
             preparedStatement.setString(2,lastName);
-
             int resultSet = preparedStatement.executeUpdate();
             System.out.println(resultSet);
         }catch(SQLException exception){
@@ -135,7 +173,16 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public void deleteAuthorFromDatabase(Author a) {
-
+        int authorId = a.getId();
+        String executionString = "DELETE FROM author WHERE id = ?";
+        try{
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            preparedStatement.setInt(1,authorId);
+            int resultSet = preparedStatement.executeUpdate();
+            System.out.println(resultSet);
+        }catch(SQLException exception){
+            exception.printStackTrace();
+        }
     }
 
 
@@ -148,7 +195,7 @@ public class SQLService implements SqlQueriesInterface {
             preparedStatement.setString(1,firstName);
             preparedStatement.setString(2,lastName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            authorToReturn = createAuthor(resultSet);
+            authorToReturn = createAuthorObject(resultSet);
         }catch(SQLException exception){
             exception.printStackTrace();
         }
@@ -157,16 +204,13 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public void linkBookToAuthor(Book book, Author author) {
+        int authorId = author.getId();
         int bookId = book.getBookId();
-        int authorId = author.getAuthorId;
-
-        Author authorToLink;
         String executionString = "INSERT INTO book_author (bookId,authorId) VALUES (?, ?)";
         try{
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
-            preparedStatement.setString(1,bookId);
-            preparedStatement.setString(2,authorId);
-
+            preparedStatement.setInt(1,bookId);
+            preparedStatement.setInt(2,authorId);
             int resultSet = preparedStatement.executeUpdate();
             System.out.println(resultSet);
         }catch(SQLException exception){
@@ -174,7 +218,7 @@ public class SQLService implements SqlQueriesInterface {
         }
     }
 
-    private static Book createBook(ResultSet resultSet) throws SQLException {
+    private static Book createBookObject(ResultSet resultSet) throws SQLException {
         Book bookToCreate = null;
         String bookGenre = resultSet.getString("genre");
         String bookName = resultSet.getString("bookName");
@@ -186,12 +230,13 @@ public class SQLService implements SqlQueriesInterface {
         }
         return bookToCreate;
     }
-    private static Author createAuthor(ResultSet resultSet) throws SQLException {
+    private static Author createAuthorObject(ResultSet resultSet) throws SQLException {
         Author authorToCreate;
         String authorFirstName = resultSet.getString("firstName");
         String authorLastName = resultSet.getString("lastName");
         int authorAge = resultSet.getInt("age");
-        authorToCreate = new Author(authorFirstName,authorLastName,authorAge);
+        int authorId = resultSet.getInt("id");
+        authorToCreate = new Author(authorId, authorFirstName,authorLastName,authorAge);
         return authorToCreate;
     }
 }

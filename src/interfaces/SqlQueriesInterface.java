@@ -12,7 +12,7 @@ public interface SqlQueriesInterface {
     Book getBookByName(String bookName);
     Book getBookByIsbn(String isbn);
     ArrayList<Book> retrieveBooksByAuthor(Author author);
-    void addCustomerIdToBook(Customer customer);
+    void addCustomerIdToBook(Book bok,Customer customer);
     void addAuthorToDatabase(Author a);
     void deleteAuthorFromDatabase(Author a);
     Author getAuthorByName(String firstName, String lastName);
