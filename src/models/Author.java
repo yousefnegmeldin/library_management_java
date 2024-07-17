@@ -6,8 +6,8 @@ public class Author extends Human {
     private int numOfPublishedBooks;
     private final ArrayList<Book> booksWritten;
 
-    public Author(String firstName,String lastName,int age){
-        super(firstName,lastName,age);
+    public Author(int authorId, String firstName,String lastName,int age){
+        super(authorId,firstName,lastName,age);
         numOfPublishedBooks=0;
         this.booksWritten = new ArrayList<>();
     }

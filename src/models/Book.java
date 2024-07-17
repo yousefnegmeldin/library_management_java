@@ -3,11 +3,13 @@ package models;
 public abstract class Book {
     private String name;
     private String isbn;
+    private int bookId;
     private String genre;
     private Author author;
     private Author secondAuthor;
     private Author thirdAuthor;
-    public Book(String name, String isbn, String genre, Author author){
+    public Book(int bookId, String name, String isbn, String genre, Author author){
+        this.bookId = bookId;
         this.name = name;
         this.isbn = isbn;
         this.author =author;
@@ -15,7 +17,8 @@ public abstract class Book {
         if(author !=null)
             author.addBook(this);
     }
-    public Book(String name, String isbn,String genre, Author author1, Author author2){
+    public Book(int bookId, String name, String isbn,String genre, Author author1, Author author2){
+        this.bookId = bookId;
         this.name = name;
         this.isbn = isbn;
         this.author =author1;
@@ -24,8 +27,9 @@ public abstract class Book {
         secondAuthor.addBook(this);
     }
 
-    public Book(String name, String isbn,String genre, Author author1, Author author2, Author author3){
+    public Book(int bookId, String name, String isbn,String genre, Author author1, Author author2, Author author3){
         this.name = name;
+        this.bookId = bookId;
         this.isbn = isbn;
         this.author =author1;
         this.secondAuthor = author2;
@@ -52,6 +56,14 @@ public abstract class Book {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
+
+    public int getBookId(){
+        return this.bookId;
+    }
+    public void setBookId(int bookId){
+        this.bookId = bookId;
+    }
+
 
     public Author getAuthor() {
         return author;

@@ -1,7 +1,7 @@
 package models;
 
 public class NonFictionBook extends Book {
-    public NonFictionBook(String name, String isbn, String genre,Author author){
-        super(name,isbn,genre,author);
+    public NonFictionBook(int bookId, String name, String isbn, String genre,Author author){
+        super(bookId,name,isbn,genre,author);
     }
 }

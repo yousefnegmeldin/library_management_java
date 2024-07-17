@@ -107,7 +107,7 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public ArrayList<Book> retrieveBooksByAuthor(Author author) {
-        return new Book[0];
+
     }
 
     @Override
@@ -116,19 +116,21 @@ public class SQLService implements SqlQueriesInterface {
     }
 
     @Override
-    public void addAuthorToDatabase(Author a) {
-        String firstName = a.getFirstName();
-        String lastName = a.getLastName();
-        String values = firstName+","+lastName;
+    public void addAuthorToDatabase(Author author) {
+        String firstName = author.getFirstName();
+        String lastName = author.getLastName();
+        String executionString = "INSERT INTO book (firstName,lastName) VALUES (?, ?)";
         try{
-            Statement statement = databaseConnection.connection.createStatement();
-            String executionString ="INSERT INTO author(firstName,lastName) " +
-                    "VALUES ("+values+")";
-            ResultSet resultSet = statement.executeQuery(executionString);
-            System.out.println(resultSet.toString());
-        }catch(SQLException exception){
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            preparedStatement.setString(1,firstName);
+            preparedStatement.setString(2,lastName);
 
+            int resultSet = preparedStatement.executeUpdate();
+            System.out.println(resultSet);
+        }catch(SQLException exception){
+            exception.printStackTrace();
         }
+
     }
 
     @Override
@@ -139,12 +141,37 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public Author getAuthorByName(String firstName, String lastName) {
-        return null;
+        String executionString = "SELECT 1 FROM author WHERE firstName = ? AND lastName = ?";
+        Author authorToReturn =null;
+        try{
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            preparedStatement.setString(1,firstName);
+            preparedStatement.setString(2,lastName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            authorToReturn = createAuthor(resultSet);
+        }catch(SQLException exception){
+            exception.printStackTrace();
+        }
+        return authorToReturn;
     }
 
     @Override
     public void linkBookToAuthor(Book book, Author author) {
+        int bookId = book.getBookId();
+        int authorId = author.getAuthorId;
 
+        Author authorToLink;
+        String executionString = "INSERT INTO book_author (bookId,authorId) VALUES (?, ?)";
+        try{
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            preparedStatement.setString(1,bookId);
+            preparedStatement.setString(2,authorId);
+
+            int resultSet = preparedStatement.executeUpdate();
+            System.out.println(resultSet);
+        }catch(SQLException exception){
+            exception.printStackTrace();
+        }
     }
 
     private static Book createBook(ResultSet resultSet) throws SQLException {
@@ -152,10 +179,19 @@ public class SQLService implements SqlQueriesInterface {
         String bookGenre = resultSet.getString("genre");
         String bookName = resultSet.getString("bookName");
         String bookIsbn = resultSet.getString("isbn");
+        int bookId = resultSet.getInt("id");
         switch(bookGenre){
-            case "Fantasy": bookToCreate = new FantasyBook(bookName,bookIsbn,bookGenre,null);break;
-            case "NonFiction":bookToCreate = new NonFictionBook(bookName,bookIsbn,bookGenre,null);break;
+            case "Fantasy": bookToCreate = new FantasyBook(bookId,bookName,bookIsbn,bookGenre,null);break;
+            case "NonFiction":bookToCreate = new NonFictionBook(bookId,bookName,bookIsbn,bookGenre,null);break;
         }
         return bookToCreate;
+    }
+    private static Author createAuthor(ResultSet resultSet) throws SQLException {
+        Author authorToCreate;
+        String authorFirstName = resultSet.getString("firstName");
+        String authorLastName = resultSet.getString("lastName");
+        int authorAge = resultSet.getInt("age");
+        authorToCreate = new Author(authorFirstName,authorLastName,authorAge);
+        return authorToCreate;
     }
 }

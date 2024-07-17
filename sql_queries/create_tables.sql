@@ -16,9 +16,10 @@ CREATE TABLE book(
 );
 
 CREATE TABLE author(
-	id INT NOT NULL AUTO_iNCREMENT,
+	id INT NOT NULL AUTO_INCREMENT,
     firstName VARCHAR(50),
     lastName VARCHAR(50),
+    age INT,
     PRIMARY KEY (id)
 );
 
