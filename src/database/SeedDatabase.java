@@ -34,7 +34,7 @@ public class SeedDatabase {
             int randomNumForLastName =(int) Math.floor(Math.random()*4500);
             int randomNumForBookName1 =(int) Math.floor(Math.random()*10000);
             int randomNumForBookName2 =(int) Math.floor(Math.random()*10000);
-            String isbn = ((int) Math.floor(Math.random()*251678)) +"";
+            String isbn = ((int) Math.floor(Math.random()*2516788)) +"";
             int authorAge = (int) Math.floor(Math.random()*100);
             String authorFirstName = names.get(randomNumForFirstName);
             String authorLastName = names.get(randomNumForLastName);

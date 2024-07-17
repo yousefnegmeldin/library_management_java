@@ -119,7 +119,7 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public ArrayList<Book> retrieveBooksByAuthor(Author author) {
-        String executionString = "SELECT * FROM book WHERE id = (SELECT bookId FROM book_author WHERE authorId = ?)";
+        String executionString = "SELECT * FROM book WHERE id IN (SELECT bookId FROM book_author WHERE authorId = ?)";
         ArrayList<Book> booksRetrieved = new ArrayList<>();
         int authorId = author.getId();
         try{
@@ -233,13 +233,14 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public Author getAuthorByName(String firstName, String lastName) {
-        String executionString = "SELECT 1 FROM author WHERE firstName = ? AND lastName = ?";
+        String executionString = "SELECT * FROM author WHERE firstName = ? AND lastName = ? LIMIT 1";
         Author authorToReturn =null;
         try{
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             preparedStatement.setString(1,firstName);
             preparedStatement.setString(2,lastName);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             authorToReturn = createAuthorObject(resultSet);
         }catch(SQLException exception){
             exception.printStackTrace();
