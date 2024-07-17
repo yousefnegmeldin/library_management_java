@@ -32,11 +32,11 @@ public class SQLService implements SqlQueriesInterface {
 
     @Override
     public void deleteBook(Book book) {
-        String isbn = book.getIsbn();
+        int bookId = book.getBookId();
         String executionString = "DELETE FROM book WHERE isbn=?";
         try{
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
-            preparedStatement.setString(1,isbn);
+            preparedStatement.setInt(1,bookId);
             int resultSet = preparedStatement.executeUpdate();
             System.out.println(resultSet);
         }catch(SQLException exception){
@@ -59,7 +59,6 @@ public class SQLService implements SqlQueriesInterface {
             preparedStatement.setString(1,name);
             preparedStatement.setString(2,isbn);
             preparedStatement.setString(3,genre);
-
             ResultSet generatedKeys = null;
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows > 0) {
@@ -75,7 +74,6 @@ public class SQLService implements SqlQueriesInterface {
                 linkBookToAuthor(book,secondAuthor);
             if(thirdAuthor!=null)
                 linkBookToAuthor(book,thirdAuthor);
-
         }catch(SQLException exception){
             exception.printStackTrace();
         }
@@ -100,6 +98,7 @@ public class SQLService implements SqlQueriesInterface {
         return null;
     }
 
+    //redundant? useless?
     @Override
     public Book getBookByIsbn(String isbnToSearch) {
         String executionString = "SELECT * FROM book WHERE isbn=?";
@@ -146,6 +145,22 @@ public class SQLService implements SqlQueriesInterface {
         try{
             PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
             preparedStatement.setInt(1,customerId);
+            preparedStatement.setInt(2,bookId);
+            int resultSet = preparedStatement.executeUpdate();
+            System.out.println(resultSet);
+        }catch(SQLException exception){
+            exception.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeCustomerIdFromBook(Book book,Customer customer) {
+        int bookId = book.getBookId();
+        int customerId = customer.getId();
+        String executionString = "UPDATE book SET customerId = ? WHERE id = ?";
+        try{
+            PreparedStatement preparedStatement =databaseConnection.connection.prepareStatement(executionString);
+            preparedStatement.setNull(1, Types.INTEGER);
             preparedStatement.setInt(2,bookId);
             int resultSet = preparedStatement.executeUpdate();
             System.out.println(resultSet);
