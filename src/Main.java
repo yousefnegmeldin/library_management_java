@@ -1,4 +1,5 @@
 import models.*;
+import services.SQLService;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,5 +35,11 @@ public class Main {
         else{
             System.out.println("no books found for this author");
         }*/
+        SQLService sqlService = new SQLService();
+        FantasyBook book1 = new FantasyBook("Harry Potter9","23578357932","Fantasy",null);
+        sqlService.addBookToDatabase(book1);
+//        sqlService.deleteBook(book1);
+        Book book = sqlService.getBookByIsbn("23578357932");
+        System.out.println(book.getName());
     }
 }

@@ -12,7 +12,8 @@ public abstract class Book {
         this.isbn = isbn;
         this.author =author;
         this.genre = genre;
-        author.addBook(this);
+        if(author !=null)
+            author.addBook(this);
     }
     public Book(String name, String isbn,String genre, Author author1, Author author2){
         this.name = name;
