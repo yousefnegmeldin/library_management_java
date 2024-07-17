@@ -1,6 +1,13 @@
-# models.Library Management System
+# Library Management System
 
 ---
+
+## Setup
+
+Run create_tables.sql function
+then run the main function in the src/database/SeedDatabase.java file.
+
+
 ## Features
 
 - Retrieve books by authors
@@ -16,9 +23,6 @@
 I used the optional type in the following function
 
 ```java
-import models.Author;
-import models.Book;
-
 public Optional<List<Book>> retrieve(Author author)
 ```
 Here, I return the optional data type denoting that the return type may be null if
@@ -42,14 +46,14 @@ public void displayBooks(){
 
 ---
 ## Abstract Classes
-- models.Book
-- models.Human
+- Book
+- Human
 ## Classes
-- models.Customer
-- models.Author
-- models.FantasyBook
-- models.NonFictionBook
-- models.Library
+- Customer
+- Author
+- FantasyBook
+- NonFictionBook
+- Library
 - Main
 
 ### Abstraction
